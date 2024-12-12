@@ -4,7 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\JobSeeder;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Database\Seeders\RandomUsersSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +16,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        DB::table('job_listings')->truncate();
+        DB::table('users')->truncate();
+
+        // $this->call(TestUserSeeder::class);
+        $this->call(RandomUsersSeeder::class);
+        $this->call(JobSeeder::class);
+        // $this->call(BookmarkSeeder::class);
     }
 }
