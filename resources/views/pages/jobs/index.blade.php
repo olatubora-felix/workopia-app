@@ -8,4 +8,5 @@
       <p>No Avalible job</p>
     @endforelse
   </div>
+  {{ $jobs->links() }}
 </x-layout>

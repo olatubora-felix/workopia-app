@@ -8,16 +8,23 @@
             <i class="fa fa-arrow-alt-circle-left"></i>
             Back To Listings
           </a>
-          <div class="flex space-x-3 ml-4">
-            <a href="/edit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
-            <!-- Delete Form -->
-            <form method="POST">
-              <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
-                Delete
-              </button>
-            </form>
-            <!-- End Delete Form -->
-          </div>
+
+          @can('update', $job)
+            <div class="flex space-x-3 ml-4">
+              <a href="{{ route('jobs.edit', $job->id) }}"
+                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
+              <!-- Delete Form -->
+              <form method="POST" action="{{ route('jobs.destroy', $job->id) }}"
+                onsubmit="return confirm('Are you sure that you want to delete this job?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
+                  Delete
+                </button>
+              </form>
+              <!-- End Delete Form -->
+            </div>
+          @endcan
         </div>
         <div class="p-4">
           <h2 class="text-xl font-semibold">
@@ -44,10 +51,13 @@
             <li class="mb-2">
               <strong>Site Location:</strong> {{ $job->city }}, {{ $job->state }}
             </li>
-            <li class="mb-2 capitalize">
-              <strong>Tags:</strong>
-              {{ str_replace(',', ', ', $job->tags) }}
-            </li>
+            @if ($job->tags)
+              <li class="mb-2 capitalize">
+                <strong>Tags:</strong>
+                {{ str_replace(',', ', ', $job->tags) }}
+              </li>
+            @endif
+
           </ul>
         </div>
       </div>
@@ -85,21 +95,26 @@
 
     <!-- Sidebar -->
     <aside class="bg-white rounded-lg shadow-md p-3">
-      <h3 class="text-xl text-center mb-4 font-bold">
+      <h3 class="text-xl  text-center mb-4 font-bold">
         Company Info
       </h3>
-      <img src="/images/{{ $job->company_logo }}" alt={{ $job->company_name }}
-        class="w-full rounded-lg mb-4 m-auto" />
+      @if ($job->company_logo)
+        <img src="/storage/{{ $job->company_logo }}" alt={{ $job->company_name }}
+          class="w-full rounded-lg mb-4 m-auto" />
+      @endif
+
       <h4 class="text-lg font-bold">{{ $job->company_name }}</h4>
       <p class="text-gray-700 text-lg my-3">
         {{ $job->company_description }}
       </p>
       <a href={{ $job->company_website }} target="_blank" class="text-blue-500">Visit Website</a>
+      @auth
+        <a href=""
+          class="mt-10 bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"><i
+            class="fas fa-bookmark mr-3"></i> Bookmark
+          Listing</a>
+      @endauth
 
-      <a href=""
-        class="mt-10 bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"><i
-          class="fas fa-bookmark mr-3"></i> Bookmark
-        Listing</a>
     </aside>
   </div>
 </x-layout>
