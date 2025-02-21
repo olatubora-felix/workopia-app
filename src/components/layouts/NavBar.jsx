@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 import { routes } from "../../constant/navRoute";
 import { FaEdit } from "react-icons/fa";
-const Navbar = () => {
+const NavBar = () => {
   const active = (isActive) => {
     return isActive ? "text-yellow-500" : "text-white";
   };
@@ -34,4 +34,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;
