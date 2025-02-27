@@ -1,9 +1,12 @@
+/* eslint-disable react/prop-types */
 import { NavLink } from "react-router";
 
-const Logo = () => {
+const Logo = ({ toggleMenu }) => {
   return (
     <h1 className="lg:text-3xl text-2xl font-semibold">
-      <NavLink to="/">Workopia</NavLink>
+      <NavLink to="/" onClick={toggleMenu}>
+        Workopia
+      </NavLink>
     </h1>
   );
 };

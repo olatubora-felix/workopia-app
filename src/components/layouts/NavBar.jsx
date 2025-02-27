@@ -23,12 +23,12 @@ const NavBar = () => {
       {menu && (
         <nav className="fixed inset-0 z-40 h-[300px]  bg-blue-900 w-full p-5 space-y-6">
           <div className="flex justify-between items-center">
-            <Logo />
+            <Logo toggleMenu={toggleMenu} />
             <button onClick={toggleMenu}>
               <IoClose fontSize={24} />
             </button>
           </div>
-          <Menu menuStyle="space-y-5 py-6" />
+          <Menu menuStyle="space-y-5 py-6" toggleMenu={toggleMenu} />
         </nav>
       )}
     </header>
