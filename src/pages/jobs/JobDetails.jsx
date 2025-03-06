@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from "react-router";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import { jobListings } from "../../constant/jobs";
+import Title from "../../components/Title";
+import JobDetail from "../../components/jobs/JobDetail";
 const JobDetails = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();
@@ -37,22 +39,9 @@ const JobDetails = () => {
             </div>
           </div>
           <div className="p-4">
-            <h2 className="text-xl font-semibold">{job.title}</h2>
+            <Title>{job.title}</Title>
             <p className="text-gray-700 text-lg mt-2">{job.description}</p>
-            <ul className="my-4 bg-gray-100 p-4">
-              <li className="mb-2">
-                <strong>Salary:</strong> ${job.salary}
-              </li>
-              <li className="mb-2">
-                <strong>Location:</strong> {`${job.city} ${job.state}`}
-                <span className="text-xs bg-blue-500 text-white rounded-full px-2 py-1 ml-2">
-                  Local
-                </span>
-              </li>
-              <li className="mb-2 capitalize">
-                <strong>Tags:</strong> <span>{job.tags.join(" , ")}</span>
-              </li>
-            </ul>
+            <JobDetail {...job} />
           </div>
         </div>
       </section>

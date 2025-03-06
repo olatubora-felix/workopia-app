@@ -1,9 +1,25 @@
+import { useNavigate } from "react-router";
 import CustomButton from "../../components/CustomButton";
 import CustomInput from "../../components/CustomInput";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import { loginInputs } from "../../constant/auth";
+import useFormValidate from "../../hooks/useFormValidate";
+import { loginSchema } from "../../schemas/authSchema";
 
 const Login = () => {
+  const initialState = {
+    email: "",
+    password: "",
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useFormValidate(initialState, loginSchema);
+  const navigate = useNavigate();
+  const onSubmit = (data) => {
+    if (data) return navigate("/dashboard");
+  };
   return (
     <AuthLayout
       title={"Login"}
@@ -11,7 +27,7 @@ const Login = () => {
       subText={"Register"}
       textLink={"/auth/register"}
     >
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {loginInputs.map(({ name, placeholder, type, label }) => (
           <CustomInput
             label={label}
@@ -19,6 +35,8 @@ const Login = () => {
             placeholder={placeholder}
             type={type}
             key={name}
+            register={register}
+            error={errors[name]?.message}
           />
         ))}
         <CustomButton>Login</CustomButton>

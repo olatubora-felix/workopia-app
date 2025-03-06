@@ -23,11 +23,14 @@ const SearchShowcase = ({ className }) => {
           type="text"
           name={name}
           placeholder={placeholder}
-          className="w-full md:w-auto  px-4 py-2 focus:outline-none"
+          className="w-full md:w-auto  px-4 py-2 focus:outline-none border-none rounded-none"
         />
       ))}
 
-      <CustomButton className=" md:w-auto  px-4 py-2 flex items-center gap-2 justify-center">
+      <CustomButton
+        className=" md:w-auto  px-4 py-2 flex items-center gap-2 justify-center"
+        onClick={() => alert("hello")}
+      >
         <FaSearch /> Search
       </CustomButton>
     </form>

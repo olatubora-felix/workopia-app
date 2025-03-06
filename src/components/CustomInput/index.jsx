@@ -6,11 +6,13 @@ const CustomInput = ({
   type,
   name,
   placeholder,
-  className = "w-full px-4 py-2 border rounded focus:outline-none",
+  className,
   label,
+  register = () => {},
+  error,
 }) => {
   const [show, setShow] = useState(false);
-  console.log(show);
+
   const toggleShow = () => {
     return setShow((currentState) => !currentState);
   };
@@ -22,7 +24,10 @@ const CustomInput = ({
           type={show && type === "password" ? "text" : type}
           name={name}
           placeholder={placeholder}
-          className={className}
+          className={`w-full px-4 py-2 border rounded focus:outline-none ${className}`}
+          {...register(name, {
+            required: true,
+          })}
         />
         {type === "password" && (
           <div className=" absolute top-1/2 right-2 -translate-y-1/2">
@@ -34,6 +39,7 @@ const CustomInput = ({
           </div>
         )}
       </div>
+      {error && <p className="text-red-400 text-sm">{error}</p>}
     </div>
   );
 };

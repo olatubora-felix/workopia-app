@@ -25,7 +25,7 @@ export const registerInputs = [
     type: "password",
   },
   {
-    name: "password_confirmation",
+    name: "passwordConfirmation",
     placeholder: "Confirm Password",
     type: "password",
   },

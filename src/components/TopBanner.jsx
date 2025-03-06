@@ -1,8 +1,10 @@
+import Title from "./Title";
+
 const TopBanner = () => {
   return (
     <section className="bg-blue-900 text-white py-6 text-center  px-2">
       <div className="container mx-auto">
-        <h2 className="text-3xl font-semibold">Unlock Your Career Potential</h2>
+        <Title className="text-3xl">Unlock Your Career Potential</Title>
         <p className="text-lg mt-2">
           Discover the perfect job opportunity for you.
         </p>

@@ -5,6 +5,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import AllJobPage from "./pages/jobs";
 import JobDetails from "./pages/jobs/JobDetails";
+import Dashboard from "./pages/dashboard";
 
 const App = () => {
   return (
@@ -18,6 +19,9 @@ const App = () => {
             <Route path="register" element={<Register />} />
           </Route>
           <Route index element={<Home />} />
+          <Route path="dashboard">
+            <Route index element={<Dashboard />} />
+          </Route>
           <Route path="jobs">
             <Route index element={<AllJobPage />} />
             <Route path=":jobId" element={<JobDetails />} />
