@@ -7,14 +7,6 @@ export const registerSchema = z
       .min(3, { message: "Full Name must be at least 3 characters" })
       .trim(),
     email: z.string().email({ message: "Kindly provide a valid email" }).trim(),
-    city: z
-      .string()
-      .min(3, { message: "City must be at least 3 characters" })
-      .trim(),
-    state: z
-      .string()
-      .min(3, { message: "State must be at least 3 characters" })
-      .trim(),
     password: z
       .string()
       .min(3, { message: "Password must be at least 3 characters" }),

@@ -10,16 +10,6 @@ export const registerInputs = [
     type: "email",
   },
   {
-    name: "city",
-    placeholder: "City",
-    type: "text",
-  },
-  {
-    name: "state",
-    placeholder: "State",
-    type: "text",
-  },
-  {
     name: "password",
     placeholder: "Password",
     type: "password",

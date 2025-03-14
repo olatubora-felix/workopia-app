@@ -3,6 +3,7 @@ import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import Logo from "./Logo";
 import Menu from "./Menu";
+
 const NavBar = () => {
   const [menu, setMenu] = useState(false);
 

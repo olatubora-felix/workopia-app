@@ -6,6 +6,7 @@ import Register from "./pages/auth/Register";
 import AllJobPage from "./pages/jobs";
 import JobDetails from "./pages/jobs/JobDetails";
 import Dashboard from "./pages/dashboard";
+import { ProtectedRoute } from "./protecteRoute/ProtectedRoute";
 
 const App = () => {
   return (
@@ -14,7 +15,7 @@ const App = () => {
       <Routes>
         <Route path="/">
           {/* Unprotected Pages/Routes */}
-          <Route path="auth">
+          <Route path="auth" element={<ProtectedRoute />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>

@@ -5,8 +5,14 @@ import AuthLayout from "../../components/layouts/AuthLayout";
 import { loginInputs } from "../../constant/auth";
 import useFormValidate from "../../hooks/useFormValidate";
 import { loginSchema } from "../../schemas/authSchema";
+import { useAuth } from "../../hooks/useAuth";
+import { useState } from "react";
+import { axiosInstance } from "../../services/axiosInstance";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const { setUser } = useAuth();
+  const [loading, setLoading] = useState(false);
   const initialState = {
     email: "",
     password: "",
@@ -17,8 +23,23 @@ const Login = () => {
     formState: { errors },
   } = useFormValidate(initialState, loginSchema);
   const navigate = useNavigate();
-  const onSubmit = (data) => {
-    if (data) return navigate("/dashboard");
+  const onSubmit = async (data) => {
+    const payload = {
+      identifier: data.email,
+      password: data.password,
+    };
+    setLoading(true);
+    try {
+      const { data } = await axiosInstance.post("/auth/local", payload);
+
+      setUser({ ...data.user, jwt: data.jwt });
+      toast.success("User Register Successfully");
+      return navigate("/dashboard");
+    } catch (error) {
+      toast.error(error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <AuthLayout
@@ -39,7 +60,7 @@ const Login = () => {
             error={errors[name]?.message}
           />
         ))}
-        <CustomButton>Login</CustomButton>
+        <CustomButton>{loading ? "Loading..." : "Login"}</CustomButton>
       </form>
     </AuthLayout>
   );

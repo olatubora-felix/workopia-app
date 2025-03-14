@@ -5,14 +5,18 @@ import { registerInputs } from "../../constant/auth";
 import { registerSchema } from "../../schemas/authSchema";
 import useFormValidate from "../../hooks/useFormValidate";
 import { useNavigate } from "react-router";
+import { useState } from "react";
+import { axiosInstance } from "../../services/axiosInstance";
+import { useAuth } from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 const Register = () => {
+  const { setUser } = useAuth();
+  const [loading, setLoading] = useState(false);
   const initialState = {
     name: "",
     email: "",
-    city: "",
     password: "",
     passwordConfirmation: "",
-    state: "",
   };
   const {
     register,
@@ -21,9 +25,29 @@ const Register = () => {
   } = useFormValidate(initialState, registerSchema);
 
   const navigate = useNavigate();
-  const onSubmit = (data) => {
-    if (data) return navigate("/dashboard");
+  const onSubmit = async (data) => {
+    const payload = {
+      username: data.name,
+      email: data.email,
+      password: data.password,
+    };
+    setLoading(true);
+    try {
+      const { data } = await axiosInstance.post(
+        "/auth/local/register",
+        payload
+      );
+
+      setUser({ ...data.user, jwt: data.jwt });
+      toast.success("User Register Successfully");
+      return navigate("/dashboard");
+    } catch (error) {
+      toast.error(error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <AuthLayout
       title={"Register"}
@@ -42,7 +66,7 @@ const Register = () => {
             error={errors[name]?.message}
           />
         ))}
-        <CustomButton>Register</CustomButton>
+        <CustomButton>{loading ? "Loading..." : "Register"}</CustomButton>
       </form>
     </AuthLayout>
   );
