@@ -1,4 +1,4 @@
-import JobListings from "../../components/jobs/JobListings";
+import JobListings from "../../components/features/jobs/JobListings";
 import SearchShowcase from "../../components/SearchShowcase";
 import TopBanner from "../../components/TopBanner";
 

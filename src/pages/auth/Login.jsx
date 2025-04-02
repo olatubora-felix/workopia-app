@@ -7,8 +7,8 @@ import useFormValidate from "../../hooks/useFormValidate";
 import { loginSchema } from "../../schemas/authSchema";
 import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
-import { axiosInstance } from "../../services/axiosInstance";
 import toast from "react-hot-toast";
+import { signInApi } from "../../services/auth";
 
 const Login = () => {
   const { setUser } = useAuth();
@@ -24,16 +24,11 @@ const Login = () => {
   } = useFormValidate(initialState, loginSchema);
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    const payload = {
-      identifier: data.email,
-      password: data.password,
-    };
     setLoading(true);
     try {
-      const { data } = await axiosInstance.post("/auth/local", payload);
-
-      setUser({ ...data.user, jwt: data.jwt });
-      toast.success("User Register Successfully");
+      const result = await signInApi(data);
+      setUser(result);
+      toast.success("User Login Successfully");
       return navigate("/dashboard");
     } catch (error) {
       toast.error(error?.message);

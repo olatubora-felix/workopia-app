@@ -10,14 +10,10 @@ const Menu = ({ menuStyle, toggleMenu }) => {
     return isActive ? "text-yellow-500" : "text-white";
   };
 
-  const { user, handleLogout } = useAuth();
+  const { user } = useAuth();
 
   return user ? (
-    <AuthMenu
-      menuStyle={menuStyle}
-      toggleMenu={toggleMenu}
-      handleLogout={handleLogout}
-    />
+    <AuthMenu menuStyle={menuStyle} toggleMenu={toggleMenu} />
   ) : (
     <menu className={menuStyle}>
       {routes.map(({ name, path, id }) => (

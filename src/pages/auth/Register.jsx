@@ -6,9 +6,9 @@ import { registerSchema } from "../../schemas/authSchema";
 import useFormValidate from "../../hooks/useFormValidate";
 import { useNavigate } from "react-router";
 import { useState } from "react";
-import { axiosInstance } from "../../services/axiosInstance";
 import { useAuth } from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import { signUpApi } from "../../services/auth";
 const Register = () => {
   const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -22,25 +22,23 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useFormValidate(initialState, registerSchema);
 
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     const payload = {
-      username: data.name,
+      fullName: data.name,
       email: data.email,
       password: data.password,
     };
     setLoading(true);
     try {
-      const { data } = await axiosInstance.post(
-        "/auth/local/register",
-        payload
-      );
-
-      setUser({ ...data.user, jwt: data.jwt });
-      toast.success("User Register Successfully");
-      return navigate("/dashboard");
+      const result = await signUpApi(payload);
+      console.log(result);
+      setUser(result);
+      reset();
+      navigate("/dashboard");
     } catch (error) {
       toast.error(error?.message);
     } finally {

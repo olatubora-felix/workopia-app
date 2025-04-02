@@ -2,7 +2,8 @@ import { useNavigate, useParams } from "react-router";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import { jobListings } from "../../constant/jobs";
 import Title from "../../components/Title";
-import JobDetail from "../../components/jobs/JobDetail";
+import JobDetail from "../../components/features/jobs/JobDetail";
+
 const JobDetails = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();

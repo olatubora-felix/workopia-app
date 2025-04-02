@@ -1,15 +1,18 @@
 import { Link } from "react-router";
-import Title from "../Title";
+import Title from "../../Title";
 import JobDetail from "./JobDetail";
 
 /* eslint-disable react/prop-types */
 const Job = (props) => {
   const { title, description, salary, city, state, tags, id } = props;
+  console.log(props);
   return (
     <div className="rounded-lg shadow-md bg-white">
       <div className="p-4">
         <Title>{title}</Title>
-        <p className="text-gray-700 text-lg mt-2">{description}</p>
+        <p className="text-gray-700 text-lg mt-2">
+          {description.substring(0, 100)} ...
+        </p>
         <JobDetail salary={salary} tags={tags} state={state} city={city} />
         <Link
           to={`/jobs/${id}`}

@@ -7,6 +7,7 @@ import AllJobPage from "./pages/jobs";
 import JobDetails from "./pages/jobs/JobDetails";
 import Dashboard from "./pages/dashboard";
 import { ProtectedRoute } from "./protecteRoute/ProtectedRoute";
+import CreateJobPage from "./pages/jobs/create";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="jobs">
             <Route index element={<AllJobPage />} />
             <Route path=":jobId" element={<JobDetails />} />
+            <Route path="create" element={<CreateJobPage />} />
           </Route>
         </Route>
       </Routes>
