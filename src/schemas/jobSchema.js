@@ -19,4 +19,8 @@ export const jobSchema = z.object({
     .regex(/^\+?\d{10,15}$/, "Invalid phone number")
     .optional(),
   email: z.string().email("Invalid email address"),
+  tags: z.string().min(3, {
+    message: "Tags must be at least 3 characters",
+  }),
+  company_website: z.string().url("Invalid URL format for company website"),
 });

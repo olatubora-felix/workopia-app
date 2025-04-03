@@ -11,9 +11,11 @@ const JobDetail = ({ salary, city, state, tags }) => {
           Local
         </span>
       </li>
-      <li className="mb-2 capitalize">
-        <strong>Tags:</strong> <span>{tags?.join(" , ")}</span>
-      </li>
+      {tags && (
+        <li className="mb-2 capitalize">
+          <strong>Tags:</strong> <span>{tags?.split(" , ")}</span>
+        </li>
+      )}
     </ul>
   );
 };

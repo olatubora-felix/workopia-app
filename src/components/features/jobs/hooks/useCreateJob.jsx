@@ -5,8 +5,12 @@ import { jobSchema } from "../../../../schemas/jobSchema";
 import { useMutation } from "@tanstack/react-query";
 import { createJobApi } from "../../../../services/jobApi";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import { uploadToCloudinary } from "../../../../services/cloudinary";
 
 const useCreateJob = () => {
+  const [image, setImage] = useState([]);
+  const [previewImage, setPreviewImage] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuth();
   console.log(user);
@@ -22,8 +26,19 @@ const useCreateJob = () => {
     state: "",
     phone: "",
     email: "",
+    tags: "",
+    company_website: "",
   };
 
+  // Add Image and Preview
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      setPreviewImage(URL.createObjectURL(file)); // Create a temporary preview URL
+    }
+  };
   const {
     register,
     handleSubmit,
@@ -42,10 +57,13 @@ const useCreateJob = () => {
       toast.error(error.message);
     },
   });
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    const result = await uploadToCloudinary(image);
+    console.log(result);
     mutate({
       ...data,
       user_id: user?.id,
+      company_logo: result,
     });
   };
   return {
@@ -54,6 +72,9 @@ const useCreateJob = () => {
     register,
     errors,
     isPending,
+    handleFileChange,
+    image,
+    previewImage,
   };
 };
 

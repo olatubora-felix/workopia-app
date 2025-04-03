@@ -5,9 +5,18 @@ import useCreateJob from "../../components/features/jobs/hooks/useCreateJob";
 import JobTitle from "../../components/features/jobs/JobTitle";
 import { companyFields, jobFields } from "../../constant/createJobInput";
 
+import FileInputAndPreview from "../../components/CustomInput/FileInputAndPreview";
+
 const CreateJobPage = () => {
-  const { onSubmit, handleSubmit, register, errors, isPending } =
-    useCreateJob();
+  const {
+    onSubmit,
+    handleSubmit,
+    register,
+    errors,
+    isPending,
+    previewImage,
+    handleFileChange,
+  } = useCreateJob();
 
   return (
     <section className="flex justify-center items-center mt-20">
@@ -45,6 +54,10 @@ const CreateJobPage = () => {
               error={errors[name]?.message}
             />
           ))}
+          <FileInputAndPreview
+            handleFileChange={handleFileChange}
+            previewImage={previewImage}
+          />
 
           <CustomButton
             disabled={isPending}

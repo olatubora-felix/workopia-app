@@ -1,48 +1,72 @@
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
-import { jobListings } from "../../constant/jobs";
 import Title from "../../components/Title";
 import JobDetail from "../../components/features/jobs/JobDetail";
+import useJobs from "../../components/features/jobs/hooks/useJobs";
+import { useAuth } from "../../hooks/useAuth";
+
+const Skeleton = () => (
+  <div className="animate-pulse p-4 bg-gray-200 rounded-lg shadow-md">
+    <div className="h-6 bg-gray-300 rounded w-1/2 mb-2"></div>
+    <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
+    <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+  </div>
+);
 
 const JobDetails = () => {
-  const { jobId } = useParams();
   const navigate = useNavigate();
-  const job = jobListings.find((job) => job?.id === jobId);
+  const { user } = useAuth();
+  const { data, status, error } = useJobs();
+
+  if (status === "pending") {
+    return (
+      <section className="container mx-auto p-4 mt-4">
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+      </section>
+    );
+  }
+
+  if (status === "error") {
+    return <p>{error.message}</p>;
+  }
+
   return (
-    <>
+    <div>
       <section className="container mx-auto p-4 mt-4">
         <div className="rounded-lg shadow-md bg-white p-3">
           <div className="flex justify-between items-center">
             <button
-              className=" p-4 text-blue-700 flex items-center gap-2"
+              className="p-4 text-blue-700 flex items-center gap-2"
               onClick={() => navigate(-1)}
             >
-              <FaArrowAltCircleLeft />
-              Back
+              <FaArrowAltCircleLeft /> Back
             </button>
-            <div className="flex space-x-4 ml-4">
-              <a
-                href="/edit"
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
-              >
-                Edit
-              </a>
-              {/* <!-- Delete Form --> */}
-              <form method="POST">
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
+            {user?.id === data?.user_id && (
+              <div className="flex space-x-4 ml-4">
+                <a
+                  href="/edit"
+                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
                 >
-                  Delete
-                </button>
-              </form>
-              {/* <!-- End Delete Form --> */}
-            </div>
+                  Edit
+                </a>
+                <form method="POST">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
+                  >
+                    Delete
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
           <div className="p-4">
-            <Title>{job.title}</Title>
-            <p className="text-gray-700 text-lg mt-2">{job.description}</p>
-            <JobDetail {...job} />
+            <Title>{data?.title}</Title>
+            <p className="text-gray-700 text-lg mt-2">{data?.description}</p>
+            <JobDetail {...data} />
           </div>
         </div>
       </section>
@@ -53,11 +77,11 @@ const JobDetails = () => {
           <h3 className="text-lg font-semibold mb-2 text-blue-500">
             Job Requirements
           </h3>
-          <p>{job.requirements}</p>
+          <p>{data?.requirements}</p>
           <h3 className="text-lg font-semibold mt-4 mb-2 text-blue-500">
             Benefits
           </h3>
-          <p>{job.benefits}</p>
+          <p>{data?.benefits}</p>
         </div>
         <p className="my-5">
           Put &quot;Job Application&quot; as the subject of your email and
@@ -67,7 +91,7 @@ const JobDetails = () => {
           Apply Now
         </button>
       </section>
-    </>
+    </div>
   );
 };
 
