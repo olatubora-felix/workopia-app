@@ -1,9 +1,10 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import Title from "../../components/Title";
 import JobDetail from "../../components/features/jobs/JobDetail";
 import useJobs from "../../components/features/jobs/hooks/useJobs";
 import { useAuth } from "../../hooks/useAuth";
+import useDeleteJob from "../../components/features/jobs/hooks/useDeleteJob";
 
 const Skeleton = () => (
   <div className="animate-pulse p-4 bg-gray-200 rounded-lg shadow-md">
@@ -15,8 +16,14 @@ const Skeleton = () => (
 
 const JobDetails = () => {
   const navigate = useNavigate();
+  const { isPending, mutate } = useDeleteJob();
   const { user } = useAuth();
-  const { data, status, error } = useJobs();
+  const { jobId } = useParams();
+  console.log(jobId);
+  const { data, status, error } = useJobs({
+    key: "id",
+    value: jobId,
+  });
 
   if (status === "pending") {
     return (
@@ -44,24 +51,27 @@ const JobDetails = () => {
             >
               <FaArrowAltCircleLeft /> Back
             </button>
-            {user?.id === data?.user_id && (
-              <div className="flex space-x-4 ml-4">
-                <a
-                  href="/edit"
-                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
-                >
-                  Edit
-                </a>
-                <form method="POST">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
-                  >
-                    Delete
-                  </button>
-                </form>
-              </div>
-            )}
+
+            <div className="flex space-x-4 ml-4">
+              <a
+                href="/edit"
+                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
+              >
+                Edit
+              </a>
+
+              <button
+                type="submit"
+                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
+                onClick={() => {
+                  if (data?.id) {
+                    mutate(data?.id);
+                  }
+                }}
+              >
+                {isPending ? "Deleting..." : "Delete"}
+              </button>
+            </div>
           </div>
           <div className="p-4">
             <Title>{data?.title}</Title>

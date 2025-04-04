@@ -2,13 +2,17 @@
 
 import { FaCamera } from "react-icons/fa";
 
-const FileInputAndPreview = ({ handleFileChange, previewImage }) => {
+const FileInputAndPreview = ({
+  handleFileChange,
+  previewImage,
+  heading = "Upload Company Logo",
+}) => {
   return (
     <div className="space-y-4">
-      <span> Upload Company Logo</span>
+      <span> {heading}</span>
       <label
         htmlFor="company_logo"
-        className="border border-gray-500 w-[200px] flex justify-center items-center flex-col p-3 rounded-lg gap-4"
+        className="border-2 border-blue-900 w-[200px] h-[100px]  flex justify-center items-center flex-col p-3 rounded-lg gap-4"
       >
         <input
           type="file"
@@ -18,9 +22,13 @@ const FileInputAndPreview = ({ handleFileChange, previewImage }) => {
           hidden
         />
         {previewImage.length > 0 ? (
-          <img src={previewImage} alt="Logo" className="" />
+          <img
+            src={previewImage}
+            alt="Logo"
+            className="w-full object-contain h-full rounded-md"
+          />
         ) : (
-          <FaCamera fontSize={30} />
+          <FaCamera fontSize={30} className="text-blue-900" />
         )}
       </label>
     </div>

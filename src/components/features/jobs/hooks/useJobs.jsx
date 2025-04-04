@@ -1,32 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import supabase from "../../../../libs/suspabase";
-import { useParams } from "react-router";
 
-const useJobs = () => {
-  const { jobId } = useParams();
-  const query = useQuery({
-    queryKey: ["jobs", jobId ?? ""],
+const useJobs = (filters) => {
+  console.log(filters);
+  return useQuery({
+    queryKey: ["jobs", filters?.value ?? ""],
     queryFn: async () => {
-      if (jobId) {
-        const { data, error } = await supabase
-          .from("jobs")
-          .select("*")
-          .eq("id", jobId)
-          .single();
-        if (error) {
-          throw error;
-        }
-        return data;
+      let query = supabase.from("jobs").select("*");
+
+      if (filters) {
+        query = query.eq(filters?.key, filters?.value).single();
       }
-      const { data, error } = await supabase.from("jobs").select("*");
-      if (error) {
-        throw error;
-      }
+
+      const { data, error } = await query;
+      if (error) throw error;
       return data;
     },
     staleTime: 60 * 1000,
   });
-  return query;
 };
 
 export default useJobs;
